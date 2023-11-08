@@ -1,20 +1,22 @@
 package entities;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
+import com.github.javafaker.Faker;
+import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 import java.util.List;
-
 
 @Entity
 @Table (name = "User")
 
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+    @Column
     private String nome;
+    @Column
     private  String cognome;
+    @Column
     private String email;
     @OneToMany (mappedBy = "user")
     private List<Prenotazioni> prenotazione;
@@ -58,5 +60,11 @@ public class User {
         this.email = email;
     }
 
-
+    @Slf4j
+    public static class UserBuilder {
+        Faker faker = new Faker();
+        String nome = faker.name().firstName();
+        String cognome = faker.name().lastName();
+        String email = faker.internet().emailAddress();
+    }
 }
